@@ -1,3 +1,4 @@
 Add a term of use
 Make work on windows
 Add more tools
+Make a friendly user interface
