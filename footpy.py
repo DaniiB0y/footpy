@@ -3,13 +3,22 @@ import socket
 from bs4 import BeautifulSoup as bs
 from string import *
 import os
+from pyfiglet import Figlet
+import platform
 #
 ports = [20, 23, 21, 25, 80, 8080, 22, 443, 4444, 110, 53, 119, 161]
 ports = sorted(ports)
 ni = len(ports)
 i = -1
 #
-x = int(input('Whois: 1\nPortscan: 2\nVerify Pwned Email: 3\n Enum: 4\n ~>'))
+input("I am not responsible for any actions you take using the program, and you will be subject to any penalty for the actions you take. type any key if you agree")
+if platform.system() == 'Linux':
+    os.system('clear')
+else:
+    os.system('cls')
+f = Figlet(font='slant')
+print(f.renderText('Footpy'))
+x = int(input('Whois: 1\nPortscan: 2\nVerify Pwned Email: 3\nEnum: 4\n ~>'))
 
 def enum():
     ip = input('Ip or dns: ~>')
