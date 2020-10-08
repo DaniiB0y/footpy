@@ -6,7 +6,6 @@ from socket import *
 import re
 from pyfiglet import Figlet
 import platform
-from ipwhois import IPWhois
 #
 ports = [20, 23, 21, 25, 80, 8080, 22, 443, 4444, 110, 53, 119, 161]
 ports = sorted(ports)
