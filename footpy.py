@@ -1,10 +1,12 @@
 import requests
-import socket
 from bs4 import BeautifulSoup as bs
 from string import *
 import os
+from socket import *
+import re
 from pyfiglet import Figlet
 import platform
+from ipwhois import IPWhois
 #
 ports = [20, 23, 21, 25, 80, 8080, 22, 443, 4444, 110, 53, 119, 161]
 ports = sorted(ports)
@@ -15,7 +17,7 @@ input("I am not responsible for any actions you take using the program, and you 
 if platform.system() == 'Linux':
     os.system('clear')
 else:
-    os.system('cls')
+    os.system('c')
 f = Figlet(font='slant')
 print(f.renderText('Footpy'))
 x = int(input('Whois: 1\nPortscan: 2\nVerify Pwned Email: 3\nEnum: 4\n ~>'))
@@ -31,13 +33,42 @@ def pwned():
     #soup = bs(page.content, 'html.parser')
     #print(soup)
 def whois():
-    url = str(input('Type the url without "www" like google.com \n ~>'))
-    #
-    page = requests.get(f'https://who.is/whois/{url}')
-    soup = bs(page.content, 'html.parser')
-    whois = soup.find('pre')
-    whois = whois.get_text()
-    print(whois)
+    #Agradecimento a mentebinaria.com.br, código deles
+    endereco = input('type the dns: ')
+
+    whois_arin = "whois.arin.net"
+
+    servidores_whois_tdl = {'.br': 'whois.registro.br', '.org': 'whois.pir.org', '.com': 'whois.verisign-grs.com', '.pt': 'whois.dns.pt'}
+
+    padrao_expressao_regular = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
+
+    def requisicao_whois(servidor_whois, endereco_host, padrao):
+        objeto_socket = socket(AF_INET, SOCK_STREAM)
+        conexao = objeto_socket.connect_ex((servidor_whois, 43))
+        if conexao == 0:
+            if padrao == True:
+                objeto_socket.send('n + {}\r\n'.format(endereco_host).encode())
+                while True:
+                    dados = objeto_socket.recv(65500)
+                    if not dados:
+                        break
+                    print(dados.decode('latin-1'))
+            elif padrao == False:
+                objeto_socket.send('{}\r\n'.format(endereco_host).encode())
+                while True:
+                    dados = objeto_socket.recv(65500)
+                    if not dados:
+                        break
+                    print(dados.decode('latin-1'))
+
+    if padrao_expressao_regular.match(endereco):
+        requisicao_whois(whois_arin, endereco, padrao = True)
+    else:
+        for TLD in servidores_whois_tdl.keys():
+            if endereco.endswith(TLD):
+                requisicao_whois(servidores_whois_tdl[TLD], endereco, padrao = False)
+
+
 
 def portscan():
     global ports
