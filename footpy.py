@@ -42,7 +42,7 @@ def whois():
     padrao_expressao_regular = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
 
     def requisicao_whois(servidor_whois, endereco_host, padrao):
-        objeto_socket = socket(AF_INET, SOCK_STREAM)
+        objeto_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         conexao = objeto_socket.connect_ex((servidor_whois, 43))
         if conexao == 0:
             if padrao == True:
@@ -86,7 +86,7 @@ def portscan():
                 print(ports[i], "OPEN")
             elif code == 1:
                 print(ports[i], "CLOSED")
-            else:
+            elif choice == "n" or "no":
                 x = int(input("number of ports to scan: ~>"))
                 for i in range(1, x):
                     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
