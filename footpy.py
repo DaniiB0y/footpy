@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 from string import *
 import os
-from socket import *
+import socket
 import re
 from pyfiglet import Figlet
 import platform
@@ -84,17 +84,18 @@ def portscan():
             code = client.connect_ex((ip, ports[0]))
             if code == 0:
                 print(ports[i], "OPEN")
-            else:
+            elif code == 1:
                 print(ports[i], "CLOSED")
-    elif choice == "n" or "no":
-        for i in range(1, 100):
-            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client.settimeout(0.1)
-            code = client.connect_ex((ip, i))
-            if code == 0:
-                print(port, "OPEN")
             else:
-                print(port, "CLOSED")
+                x = int(input("number of ports to scan: ~>"))
+                for i in range(1, x):
+                    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    client.settimeout(0.1)
+                    code = client.connect_ex((ip, i))
+                    if code == 0:
+                        print(i, "OPEN")
+                    else:
+                        print(i, "CLOSED")
 
 if x == 1:
     whois()
